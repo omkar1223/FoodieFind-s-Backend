@@ -26,7 +26,7 @@ let db;
 async function fetchAllMovies() {
   let query = 'select * from restaurants';
   let response = await db.all(query, []);
-  return response;
+  return {restaurants:response};
 }
 
 app.get('/restaurants', async (req, res) => {
@@ -37,7 +37,7 @@ app.get('/restaurants', async (req, res) => {
       return res.status(404).json({ message: 'No restaurants found' });
     }
 
-    return res.status(200).json({restaurants:result});
+    return res.status(200).json(result);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
