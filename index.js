@@ -3,6 +3,7 @@ let path = require('path');
 let cors = require('cors');
 let sqlite3 = require('sqlite3').verbose();
 let { open } = require('sqlite');
+const res = require('express/lib/response');
 
 const app = express();
 app.use(cors());
@@ -25,7 +26,7 @@ let db;
 async function fetchAllMovies() {
   let query = 'select * from restaurants';
   let response = await db.all(query, []);
-  return { restaurants: response };
+  return response;
 }
 
 app.get('/restaurants', async (req, res) => {
@@ -36,7 +37,7 @@ app.get('/restaurants', async (req, res) => {
       return res.status(404).json({ message: 'No restaurants found' });
     }
 
-    return res.status(200).json(result);
+    return res.status(200).json({restaurants:result});
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
